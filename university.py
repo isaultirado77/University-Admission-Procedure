@@ -12,12 +12,19 @@ def calculate_mean_grade(grades: list = None) -> float:
     return average
 
 
+def determine_status_admission(mean: float = 50.) -> str:
+    if mean >= 60:
+        return 'Congratulations, you are accepted!'
+    else:
+        return 'We regret to inform you that we will not be able to offer you admission.'
+
+
 def main():
     grades = read_grades()
     mean = calculate_mean_grade(grades)
     print(mean)
-    print('Congratulations, you are accepted!')
-
+    status_admission = determine_status_admission(mean)
+    print(status_admission)
 
 
 if __name__ == '__main__':
