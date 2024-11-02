@@ -1,3 +1,6 @@
+from typing import TextIO
+
+
 def read_positive_integer() -> int:
     while True:
         try:
@@ -9,8 +12,9 @@ def read_positive_integer() -> int:
             print("\nError: Your input must be an positive integer.\n")
 
 
-def read_applicants_data(applicants_number: int = 0):
-    pass
+def read_applicants_data() -> TextIO:
+    with open('applicants.txt', mode='r', encoding="utf-8") as applicants_file:
+        return applicants_file.
 
 
 def get_successful_applicants(data: dict, accepted_applicants: int):
@@ -29,4 +33,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    read_applicants_data()
