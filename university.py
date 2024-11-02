@@ -1,4 +1,4 @@
-from typing import TextIO
+from collections import defaultdict
 
 
 def read_positive_integer() -> int:
@@ -12,28 +12,36 @@ def read_positive_integer() -> int:
             print("\nError: Your input must be an positive integer.\n")
 
 
-def read_applicants_data() -> TextIO:
+def read_applicants_data() -> list:
     with open('applicants.txt', mode='r', encoding="utf-8") as applicants_file:
-        return applicants_file
+        return applicants_file.read().splitlines()
 
 
+applicants_data = read_applicants_data()
 departments = ('Biotech', 'Chemistry', 'Engineering', 'Mathematics', 'Physics')
 
+N = read_applicants_data()  # Number of applicants by department
 
-def get_successful_applicants(data: dict, accepted_applicants: int):
-    sorted_applicants = dict(
-        sorted(data.items(), key=lambda item: (-item[1], item[0])))  # Sort by gpa(item[1]) then by name(item[0])
-    successful_applicants = [item[0] for item in sorted_applicants.items()]
-    return successful_applicants[:accepted_applicants]
+accepted = defaultdict(list)
 
 
-def run() -> None:
-    pass
+def sort_accepted_dict():
+    for department, applicants in accepted.items():
+        print(department, applicants)
+        accepted[department] = list(sorted(applicants, key=lambda item: (-item[1], item[0])))
+
+
+def get_successful_applicants_by_department():
+    for applicant in applicants_data:  # For each applicant
+        name, surname, gpa, first, second, third = applicant.split()
+        accepted[first].append((f'{name} {surname}', float(gpa)))
+        # Sort by gpa then by name and surname
+        sort_accepted_dict()
 
 
 def main() -> None:
-    pass
+    get_successful_applicants_by_department()
 
 
 if __name__ == '__main__':
-    read_applicants_data()
+    get_successful_applicants_by_department()
