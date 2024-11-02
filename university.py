@@ -18,7 +18,6 @@ def read_applicants_data() -> list:
 
 
 applicants_data = read_applicants_data()
-departments = ('Biotech', 'Chemistry', 'Engineering', 'Mathematics', 'Physics')
 
 N = 5  # read_positive_integer()  # Number of applicants by department
 
@@ -38,13 +37,15 @@ def get_successful_applicants():
 def delete_accepted_applicants_from_data():
     global applicants_data
     accepted_list = [item[1][i][0] for item in accepted.items() for i in range(5)]
-    applicants_data = [applicant for applicant in applicants_data if f'{applicant.split()[0]} {applicant.split()[1]}' not in accepted_list]
+    applicants_data = [applicant for applicant in applicants_data if
+                       f'{applicant.split()[0]} {applicant.split()[1]}' not in accepted_list]
 
 
 def run_admission_procedure():
-    for applicant in applicants_data:  # For each applicant
-        name, surname, gpa, first, second, third = applicant.split()
-        accepted[first].append((f'{name} {surname}', float(gpa)))
+    for priority in range(3, 6):  # For each applicant priority
+        for applicant in applicants_data:  # For each applicant
+            data = applicant.split()
+            accepted[data[priority]].append((f'{data[0]} {data[1]}', float(data[2])))
 
         # Sort by gpa then by name and surname
         sort_accepted_dict()
@@ -52,12 +53,24 @@ def run_admission_procedure():
         # Get successful applicants given the total of applicants by department
         get_successful_applicants()
 
-    # Delete accepted applicants
-    delete_accepted_applicants_from_data()
+        # Delete accepted applicants
+        delete_accepted_applicants_from_data()
+
+
+def display_accepted_applicants():
+    departments = ('Biotech', 'Chemistry', 'Engineering', 'Mathematics', 'Physics')
+    for department in departments:
+        print(department)
+
+        for accepted_applicant in accepted[department]:
+            print(accepted_applicant[0])
+
+        print()
 
 
 def main() -> None:
     run_admission_procedure()
+    display_accepted_applicants()
 
 
 if __name__ == '__main__':
