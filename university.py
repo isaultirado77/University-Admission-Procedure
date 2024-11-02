@@ -14,7 +14,10 @@ def read_positive_integer() -> int:
 
 def read_applicants_data() -> TextIO:
     with open('applicants.txt', mode='r', encoding="utf-8") as applicants_file:
-        return applicants_file.
+        return applicants_file
+
+
+departments = ('Biotech', 'Chemistry', 'Engineering', 'Mathematics', 'Physics')
 
 
 def get_successful_applicants(data: dict, accepted_applicants: int):
