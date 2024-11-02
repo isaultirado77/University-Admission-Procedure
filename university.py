@@ -36,7 +36,7 @@ def get_successful_applicants():
 
 def delete_accepted_applicants_from_data():
     global applicants_data
-    accepted_list = [item[1][i][0] for item in accepted.items() for i in range(len(item[1]))]
+    accepted_list = [item[0] for department in accepted.values() for item in department]
     applicants_data = [applicant for applicant in applicants_data if
                        f'{applicant.split()[0]} {applicant.split()[1]}' not in accepted_list]
 
@@ -45,16 +45,20 @@ def run_admission_procedure():
     for priority in range(3, 6):  # For each applicant priority
         for applicant in applicants_data:  # For each applicant
             data = applicant.split()
+            name = f'{data[0]} {data[1]}'
+            gpa = float(data[2])
+            department_choice = data[priority]
 
-            accepted[data[priority]].append((f'{data[0]} {data[1]}', float(data[2])))
+            # Add applicant to the chosen department
+            accepted[department_choice].append((name, gpa))
 
         # Sort by gpa then by name and surname
         sort_accepted_dict()
 
-        # Get successful applicants given the total of applicants by department
+        # Keep only the successful applicants
         get_successful_applicants()
 
-        # Delete accepted applicants
+        # Remove accepted applicants from the main data
         delete_accepted_applicants_from_data()
 
 
