@@ -19,7 +19,7 @@ def read_applicants_data() -> list:
 
 applicants_data = read_applicants_data()
 
-N = 5  # read_positive_integer()  # Number of applicants by department
+N = read_positive_integer()  # Number of applicants by department
 
 accepted = defaultdict(list)
 
@@ -36,7 +36,7 @@ def get_successful_applicants():
 
 def delete_accepted_applicants_from_data():
     global applicants_data
-    accepted_list = [item[1][i][0] for item in accepted.items() for i in range(5)]
+    accepted_list = [item[1][i][0] for item in accepted.items() for i in range(len(item[1]))]
     applicants_data = [applicant for applicant in applicants_data if
                        f'{applicant.split()[0]} {applicant.split()[1]}' not in accepted_list]
 
@@ -45,6 +45,7 @@ def run_admission_procedure():
     for priority in range(3, 6):  # For each applicant priority
         for applicant in applicants_data:  # For each applicant
             data = applicant.split()
+
             accepted[data[priority]].append((f'{data[0]} {data[1]}', float(data[2])))
 
         # Sort by gpa then by name and surname
@@ -63,7 +64,7 @@ def display_accepted_applicants():
         print(department)
 
         for accepted_applicant in accepted[department]:
-            print(accepted_applicant[0])
+            print(f'{accepted_applicant[0]} {accepted_applicant[1]}')
 
         print()
 
