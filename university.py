@@ -11,7 +11,7 @@ class Applicant:
 class Department:
     def __init__(self, name: str):
         self.name = name
-        self.accepted_students = []
+        self.accepted_students = list()
 
     def __str__(self):
         text = list()
@@ -23,6 +23,24 @@ class Department:
     @property
     def nstudents(self):
         return len(self.accepted_students)
+
+
+class University:
+    def __init__(self):
+        self.departments = self.create_departments()
+
+    @staticmethod
+    def create_departments():
+        departs = list()
+        departs.append(Department('Biotech'))
+        departs.append(Department('Chemistry'))
+        departs.append(Department('Engineering'))
+        departs.append(Department('Mathematics'))
+        departs.append(Department('Physics'))
+        return departs
+
+    def start_admission_procedure(self):
+        pass
 
 
 def main() -> None:
