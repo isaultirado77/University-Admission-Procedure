@@ -38,8 +38,7 @@ def read_positive_integer() -> int:
 
 def read_applicants_data() -> list:
     applicants = list()
-    # with open('applicants.txt', mode='r', encoding="utf-8") as file:
-    with open('applicant_list.txt', mode='r', encoding="utf-8") as file:  # For testing
+    with open('applicants.txt', mode='r', encoding="utf-8") as file:
         for line in file:
             data = line.split()
             applicants.append(Applicant(f'{data[0]} {data[1]}', float(data[2]), (data[3], data[4], data[5])))
@@ -82,7 +81,7 @@ class University:
 
 
 def main() -> None:
-    pass
+    University()
 
 
 if __name__ == '__main__':
