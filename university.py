@@ -9,7 +9,20 @@ class Applicant:
 
 
 class Department:
-    pass
+    def __init__(self, name: str):
+        self.name = name
+        self.accepted_students = []
+
+    def __str__(self):
+        text = list()
+        for student in sorted(self.accepted_students, key=lambda x: (-x.gpa, x.name)):
+            text.append(f'{student.name} {student.gpa}')
+        text.append('')
+        return '\n'.join(text)
+
+    @property
+    def nstudents(self):
+        return len(self.accepted_students)
 
 
 def main() -> None:
