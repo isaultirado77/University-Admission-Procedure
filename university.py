@@ -41,7 +41,10 @@ def read_applicants_data() -> list:
     with open('applicants.txt', mode='r', encoding="utf-8") as file:
         for line in file:
             data = line.split()
-            applicants.append(Applicant(f'{data[0]} {data[1]}', float(data[2]), (data[3], data[4], data[5])))
+            name = f'{data[0]} {data[1]}'
+            gpa = float(data[2])
+            priorities = (data[3], data[4], data[5])
+            applicants.append(Applicant(name, gpa, priorities))
         return applicants
 
 
@@ -53,13 +56,7 @@ class University:
 
     @staticmethod
     def create_departments():
-        departs = list()
-        departs.append(Department('Biotech'))
-        departs.append(Department('Chemistry'))
-        departs.append(Department('Engineering'))
-        departs.append(Department('Mathematics'))
-        departs.append(Department('Physics'))
-        return departs
+        return [Department(name) for name in ('Biotech', 'Chemistry', 'Engineering', 'Mathematics', 'Physics')]
 
     def start_admission_procedure(self):
         naccepted = read_positive_integer()
