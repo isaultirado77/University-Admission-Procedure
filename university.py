@@ -7,22 +7,25 @@ class Applicant:
     def __str__(self):
         return f'{self.name} {self.scores} {self.priorities}'
 
-    def get_score(self, subjet_name: str):
+    def get_mean_score(self, subjet_names: tuple) -> float:
         indices = {'physics': 0, 'chemistry': 1, 'math': 2, 'computer science': 3}
-        index = indices[subjet_name]
-        return self.scores[index]
+        summ = 0
+        for name in subjet_names:
+            index = indices[name]
+            summ += self.scores[index]
+        return round(summ / len(subjet_names))
 
 
 class Department:
-    def __init__(self, name: str, required_skill: str):
+    def __init__(self, name: str, required_skills: tuple):
         self.name = name
         self.accepted_students = list()
-        self.required_skills = required_skill
+        self.required_skills = required_skills
 
     def __str__(self):
         text = list()
         for student in sorted(self.accepted_students, key=lambda x: (-x.get_score(self.required_skills), x.name)):
-            text.append(f'{student.name} {student.get_score(self.required_skills)}')
+            text.append(f'{student.name} {student.get_mean_score(self.required_skills)}')
         text.append('')
         return '\n'.join(text)
 
@@ -63,11 +66,11 @@ class University:
     @staticmethod
     def create_departments():
         departs = list()
-        departs.append(Department('Biotech', 'chemistry'))
-        departs.append(Department('Chemistry', 'chemistry'))
-        departs.append(Department('Engineering', 'computer science'))
-        departs.append(Department('Mathematics', 'math'))
-        departs.append(Department('Physics', 'physics'))
+        departs.append(Department('Biotech', ('chemistry', 'physics')))
+        departs.append(Department('Chemistry', ('chemistry',)))
+        departs.append(Department('Engineering', ('computer science', 'math')))
+        departs.append(Department('Mathematics', ('math',)))
+        departs.append(Department('Physics', ('physics', 'math')))
         return departs
 
     def start_admission_procedure(self):
@@ -75,7 +78,7 @@ class University:
         applicants = read_applicants_data()
         for i in range(0, 3):
             for department in self.departments:
-                remaining = sorted(applicants, key=lambda x: (-x.get_score(department.required_skills), x.name))
+                remaining = sorted(applicants, key=lambda x: (-x.get_mean_score(department.required_skills), x.name))
                 for applicant in remaining:
                     if department.nstudents == naccepted:
                         break
