@@ -47,7 +47,7 @@ def read_positive_integer() -> int:
 
 def read_applicants_data() -> list:
     applicants = list()
-    with open('applicant_list.txt', mode='r', encoding="utf-8") as file:
+    with open('applicants.txt', mode='r', encoding="utf-8") as file:
         for line in file:
             data = line.split()
             name = f'{data[0]} {data[1]}'
