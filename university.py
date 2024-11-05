@@ -7,13 +7,14 @@ class Applicant:
     def __str__(self):
         return f'{self.name} {self.scores} {self.priorities}'
 
-    def get_mean_score(self, subjet_names: tuple) -> float:
+    def get_best_score(self, subjet_names: tuple) -> float:
         indices = {'physics': 0, 'chemistry': 1, 'math': 2, 'computer science': 3}
         summ = 0
         for name in subjet_names:
             index = indices[name]
             summ += self.scores[index]
-        return round(summ / len(subjet_names), 1)
+        mean = round(summ / len(subjet_names), 1)
+        return mean if mean > self.scores[-1] else round(self.scores[-1], 1)
 
 
 class Department:
@@ -24,8 +25,8 @@ class Department:
 
     def __str__(self):
         text = list()
-        for student in sorted(self.accepted_students, key=lambda x: (-x.get_mean_score(self.required_skills), x.name)):
-            text.append(f'{student.name} {student.get_mean_score(self.required_skills)}')
+        for student in sorted(self.accepted_students, key=lambda x: (-x.get_best_score(self.required_skills), x.name)):
+            text.append(f'{student.name} {student.get_best_score(self.required_skills)}')
         text.append('')
         return '\n'.join(text)
 
@@ -51,8 +52,8 @@ def read_applicants_data() -> list:
         for line in file:
             data = line.split()
             name = f'{data[0]} {data[1]}'
-            scores = (float(data[2]), float(data[3]), float(data[4]), float(data[5]))
-            priorities = (data[6], data[7], data[8])
+            scores = (int(data[2]), int(data[3]), int(data[4]), int(data[5]), int(data[6]))
+            priorities = (data[7], data[8], data[9])
             applicants.append(Applicant(name, scores, priorities))
         return applicants
 
@@ -78,7 +79,7 @@ class University:
         applicants = read_applicants_data()
         for i in range(0, 3):
             for department in self.departments:
-                remaining = sorted(applicants, key=lambda x: (-x.get_mean_score(department.required_skills), x.name))
+                remaining = sorted(applicants, key=lambda x: (-x.get_best_score(department.required_skills), x.name))
                 for applicant in remaining:
                     if department.nstudents == naccepted:
                         break
