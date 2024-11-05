@@ -13,7 +13,7 @@ class Applicant:
         for name in subjet_names:
             index = indices[name]
             summ += self.scores[index]
-        return round(summ / len(subjet_names))
+        return round(summ / len(subjet_names), 1)
 
 
 class Department:
@@ -24,13 +24,13 @@ class Department:
 
     def __str__(self):
         text = list()
-        for student in sorted(self.accepted_students, key=lambda x: (-x.get_score(self.required_skills), x.name)):
+        for student in sorted(self.accepted_students, key=lambda x: (-x.get_mean_score(self.required_skills), x.name)):
             text.append(f'{student.name} {student.get_mean_score(self.required_skills)}')
         text.append('')
         return '\n'.join(text)
 
     @property
-    def nstudents(self):
+    def nstudents(self) -> int:
         return len(self.accepted_students)
 
 
@@ -47,7 +47,7 @@ def read_positive_integer() -> int:
 
 def read_applicants_data() -> list:
     applicants = list()
-    with open('applicants.txt', mode='r', encoding="utf-8") as file:
+    with open('applicant_list.txt', mode='r', encoding="utf-8") as file:
         for line in file:
             data = line.split()
             name = f'{data[0]} {data[1]}'
@@ -61,10 +61,10 @@ class University:
     def __init__(self):
         self.departments = self.create_departments()
         self.start_admission_procedure()
-        self.display_department_students()
+        self.generate_output_files()
 
     @staticmethod
-    def create_departments():
+    def create_departments() -> list:
         departs = list()
         departs.append(Department('Biotech', ('chemistry', 'physics')))
         departs.append(Department('Chemistry', ('chemistry',)))
@@ -73,7 +73,7 @@ class University:
         departs.append(Department('Physics', ('physics', 'math')))
         return departs
 
-    def start_admission_procedure(self):
+    def start_admission_procedure(self) -> None:
         naccepted = read_positive_integer()
         applicants = read_applicants_data()
         for i in range(0, 3):
@@ -86,10 +86,16 @@ class University:
                         department.accepted_students.append(applicant)
                         applicants.remove(applicant)
 
-    def display_department_students(self):
+    def display_department_students(self) -> None:
         for department in self.departments:
             print(department.name)
             print(department)
+
+    def generate_output_files(self) -> None:
+        for department in self.departments:
+            filename = department.name.lower() + '.txt'
+            with open(filename, 'w') as file:
+                file.write(department.__str__())
 
 
 def main() -> None:
