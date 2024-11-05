@@ -22,7 +22,7 @@ class Department:
     def __str__(self):
         text = list()
         for student in sorted(self.accepted_students, key=lambda x: (-x.get_score(self.required_skills), x.name)):
-            text.append(f'{student.name} {student.gpa}')
+            text.append(f'{student.name} {student.get_score(self.required_skills)}')
         text.append('')
         return '\n'.join(text)
 
